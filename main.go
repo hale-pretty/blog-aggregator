@@ -21,11 +21,6 @@ type apiConfig struct {
 }
 
 func main() {
-	feed, err := urltoFeed("https://wagslane.dev/index.xml")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(feed)
 
 	godotenv.Load()
 

@@ -15,7 +15,7 @@ type respPost struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 	Title       string    `json:"tittle"`
 	Url         string    `json:"url"`
-	Description string    `json:"description"`
+	Description *string   `json:"description"`
 	PublishedAt time.Time `json:"published_at"`
 	FeedID      uuid.UUID `json:"feed_id"`
 }
@@ -32,15 +32,22 @@ func (apiConfig *apiConfig) handlerGetPostByUser(w http.ResponseWriter, r *http.
 		return
 	}
 
+	var description *string
+
 	respPosts := make([]respPost, 0, len(posts))
 	for _, post := range posts {
+
+		if post.Description.Valid {
+			description = &post.Description.String
+		}
+
 		respPosts = append(respPosts, respPost{
 			ID:          post.ID,
 			CreatedAt:   post.CreatedAt,
 			UpdatedAt:   post.UpdatedAt,
 			Title:       post.Title,
 			Url:         post.Url,
-			Description: post.Description.String,
+			Description: description,
 			PublishedAt: post.PublishedAt,
 			FeedID:      post.FeedID,
 		})
